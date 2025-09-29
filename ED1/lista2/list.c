@@ -68,6 +68,10 @@ void free_list(list **l) {
 
 void insert_end(list *l, V value) {
     node *newNode = malloc(sizeof(node));
+    if (!newNode) {
+        fprintf(stderr, "Error allocating node.\n");
+        return;
+    }
     newNode->value = value;
     newNode->next = NULL;
     newNode->prev = l->tail;
@@ -82,6 +86,10 @@ void insert_end(list *l, V value) {
 
 void insert_start(list *l, V value) {
     node *newNode = malloc(sizeof(node));
+    if (!newNode) {
+        fprintf(stderr, "Error allocating node.\n");
+        return;
+    }
     newNode->value = value;
     newNode->prev = NULL;
     newNode->next = l->head;
@@ -108,6 +116,10 @@ void insert_at(list *l, V value, int index) {
         current = current->next;
     }
     node *newNode = malloc(sizeof(node));
+    if (!newNode) {
+        fprintf(stderr, "Error allocating node.\n");
+        return;
+    }
     newNode->value = value;
     newNode->prev = current->prev;
     newNode->next = current;
