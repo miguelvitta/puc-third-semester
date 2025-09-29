@@ -16,7 +16,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(TARGET) -lm
 
 # Compile each .c into a .o
-%.o: %.c
+%.o: %.c list.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 debug: CFLAGS += $(DEBUG_FLAGS)
