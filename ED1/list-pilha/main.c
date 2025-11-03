@@ -25,8 +25,7 @@ int main() {
                 while (sub_option != 0) {
                     print_basic_menu();
                     sub_option = get_int("Choose an option: ");
-                    if (sub_option == 0)
-                        break;
+                    if (sub_option == 0) break;
 
                     V value;
                     switch (sub_option) {
@@ -68,8 +67,7 @@ int main() {
                 while (sub_option != 0) {
                     print_advanced_menu();
                     sub_option = get_int("Choose an option: ");
-                    if (sub_option == 0)
-                        break;
+                    if (sub_option == 0) break;
 
                     switch (sub_option) {
                         case 1: {
@@ -107,7 +105,8 @@ int main() {
                             break;
                         }
                         case 6: {
-                            char infix[SIZE_EXPRESSION], postfix[SIZE_EXPRESSION];
+                            char infix[SIZE_EXPRESSION],
+                                postfix[SIZE_EXPRESSION];
                             printf("Enter infix expression: ");
                             fgets(infix, sizeof(infix), stdin);
                             if (infix_to_postfix(infix, postfix))
@@ -118,13 +117,18 @@ int main() {
                         }
                         case 7: {
                             Stack b = create_stack();
-                            int n = get_int("How many elements for the second stack? ");
+                            int n = get_int(
+                                "How many elements for the second stack? ");
                             for (int i = 0; i < n; i++) {
                                 V val = get_int("Enter value: ");
                                 push(&b, val);
                             }
-                            int eq = stacks_equal(s, &b);
-                            printf("Stacks equal: %d\n", eq);
+                            int equal = stacks_equal(s, &b);
+                            if (equal) {
+                                printf("Stacks equal\n");
+                            } else {
+                                printf("Stacks not equal\n");
+                            }
                             free_stack(&b);
                             break;
                         }

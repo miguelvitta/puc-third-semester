@@ -1,6 +1,7 @@
 #ifndef LIST_H
 #define LIST_H
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,7 +22,7 @@ typedef struct {
 int get_int(const char *prompt);
 
 // ===== BASIC STACK OPERATIONS =====
-Stack create_stack();
+Stack create_stack(void);
 void free_stack(Stack *s);
 void push(Stack *s, V value);
 V peek(Stack *s);
@@ -30,7 +31,7 @@ int stack_size(Stack *s);
 int is_empty(Stack *s);
 void clear_stack(Stack *s);
 
-// ===== DERIVED OPERATIONS =====
+// ===== ADVANCED STACK OPERATIONS =====
 void print_stack(Stack *s);
 int stacks_equal(Stack *a, Stack *b);
 void decimal_to_binary(int x, char *binary_str);
