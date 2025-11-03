@@ -346,7 +346,7 @@ int infix_to_postfix(char *infix_expr, char *postfix_expr) {
         }
         // Closing delimiter: ) ] } -> pop until matching opening is found
         else if (is_closing(c)) {
-            int opening = get_matching_open(c); // ')' -> '('
+            int opening = get_matching_open(c);  // ')' -> '('
 
             // Pop all operators inside the delimiters
             while (!is_empty(&op_stack) && peek(&op_stack) != opening) {
@@ -356,10 +356,10 @@ int infix_to_postfix(char *infix_expr, char *postfix_expr) {
 
             // Check if matching opening delimiter exists
             if (!is_empty(&op_stack) && peek(&op_stack) == opening) {
-                pop(&op_stack); // discard the opening delimiter
+                pop(&op_stack);  // discard the opening delimiter
             } else {
                 free_stack(&op_stack);
-                return 0; // unmatched closing delimiter
+                return 0;  // unmatched closing delimiter
             }
         }
         // Operator: + - * / ^ -> apply shunting-yard precedence rules
@@ -381,12 +381,12 @@ int infix_to_postfix(char *infix_expr, char *postfix_expr) {
                 postfix_expr[j++] = (char)pop(&op_stack);
                 postfix_expr[j++] = ' ';
             }
-            push(&op_stack, (int)c); // push current operator
+            push(&op_stack, (int)c);  // push current operator
         }
         // Any other character -> invalid input
         else {
             free_stack(&op_stack);
-            return 0; // invalid character in expression
+            return 0;  // invalid character in expression
         }
     }
 
