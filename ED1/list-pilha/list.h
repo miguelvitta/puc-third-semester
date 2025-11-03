@@ -7,6 +7,7 @@
 #include <string.h>
 
 #define V int
+#define INITIAL_CAPACITY 5
 #define SIZE_BINARY 64
 #define SIZE_BUFFER 128
 #define SIZE_EXPRESSION 256

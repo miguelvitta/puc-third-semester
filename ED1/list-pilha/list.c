@@ -40,7 +40,7 @@ int get_int(const char *prompt) {
 
 Stack create_stack(void) {
     Stack s;
-    s.cap = 5;
+    s.cap = INITIAL_CAPACITY;
     s.size = 0;
     s.arr = malloc(s.cap * sizeof(V));
     if (s.arr == NULL) {
