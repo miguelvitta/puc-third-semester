@@ -57,19 +57,18 @@ void add(Queue *q, V value) {
     }
 
     if (q->size == q->cap) {
-        q->cap = (q->cap * 1.1) + 1;
+        int old_cap = q->cap;
+        q->cap = (int)(q->cap * 1.1) + 1;
         V *temp = realloc(q->arr, q->cap * sizeof(V));
         if (temp == NULL) {
             fprintf(stderr, "Reallocation failed.\n");
             exit(1);
         }
-        if (q->head != 0) {
-            for (int i = 0; i < q->size; i++) {
-                temp[i] = q->arr[(q->head + i) % q->cap];
-            }
-            q->head = 0;
-            q->tail = q->size;
+        for (int i = 0; i < q->size; i++) {
+            temp[i] = temp[(q->head + i) % old_cap];
         }
+        q->head = 0;
+        q->tail = q->size;
         q->arr = temp;
     }
 
