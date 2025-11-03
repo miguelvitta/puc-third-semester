@@ -1,6 +1,5 @@
-# List1 – Simple List Operations in C
-
-This program implements basic list operations (insert, remove, union, intersection, difference, etc.) with a text-based menu.
+# List1 – Simple Stack Operations in C
+stack operations (push, pop, peek, etc) with a text-based menu.
 
 ## Requirements
 
@@ -15,12 +14,12 @@ This program implements basic list operations (insert, remove, union, intersecti
    ```bash
    make
    ```
-This produces an executable named list2.
+This produces an executable named list-pilha.
 
 Run the program:
 
 ```bash
-./list2
+./list-pilha
 ```
 
 To clean up object files and the binary:
@@ -33,20 +32,20 @@ To build with debug flags (AddressSanitizer, symbols, no optimizations):
 
 ```bash
 make debug
-./list2
+./list-pilha
 ```
 
 ## Build and Run Without make
 If you prefer not to use make, compile manually:
 
 ```bash
-clang -Wall -Wextra -Wshadow main.c list.c -o list2 -lm
+clang -Wall -Wextra -Wshadow main.c list.c -o list-pilha -lm
 ```
 
 Then run:
 
 ```bash
-./list2
+./list-pilha
 ```
 
 Replace clang with gcc if desired.
