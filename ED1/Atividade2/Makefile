@@ -7,7 +7,7 @@ SRCS = main.c list.c
 # Object files generated from each .c
 OBJS = $(SRCS:.c=.o)
 # Name of your final executable
-TARGET = list1
+TARGET = list-atividade
 
 all: $(TARGET)
 
