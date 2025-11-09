@@ -1,53 +1,82 @@
-segment .data ; dados inicializados
-mensi db "Entre com uma string",10
-tamensi equ $-mensi
-mensig db "O caracter é igual",10
-tamig equ $-mensig
-mensdif db "O caracter é diferente",10
-tamdif equ $-mensdif
-segment .bss ; dados não inicializados
-buff resb 20 ; vai receber a string lida
-qde resd 4
-section .text; Início do segmento de código
-global _start; Símbolo para uso do LD
+;=============================================================
+; Program: Compare first character of input string with 'a'
+; Architecture: x86 (32-bit, Linux)
+; Assembler: NASM
+;=============================================================
+
+segment .data               ; Initialized data segment
+    mensi     db "Enter a string", 10             ; Prompt message for input
+    tamensi   equ $ - mensi                       ; Length of the input message
+    mensig    db "The character is equal", 10     ; Message for equal comparison
+    tamig     equ $ - mensig                      ; Length of equal message
+    mensdif   db "The character is different", 10 ; Message for not equal comparison
+    tamdif    equ $ - mensdif                     ; Length of different message
+
+segment .bss                ; Uninitialized data segment
+    buff      resb 20       ; Buffer to store input string (max 20 bytes)
+    qde       resd 4        ; Variable to store quantity of bytes read
+
+section .text               ; Code segment
+global _start               ; Entry point for linker
+
 _start:
-; Ponto de entrada do programa
-; Exibindo a mensagem
-mov eax, 4 ; PRINT
-mov ebx, 1 ; FD da tela
-mov ecx, mensi ; ponteiro da string
-mov edx, tamensi
-int 80h ; chamada ao kernel
-; Recebendo a string
-mov eax, 3 ; READ
-mov ebx, 0 ; FD da teclado
-mov ecx, buff; buffer de destino
-mov edx, 20
-int 80h ; chamada ao kernel
-mov [qde], eax ; salvando quantos bytes ou caracteres entraram
-; Modelando o IF
-cmp byte[buff],"a"
-je igual
+    ;=========================================================
+    ; Step 1: Display input prompt
+    ;=========================================================
+    mov eax, 4              ; syscall: sys_write
+    mov ebx, 1              ; file descriptor: stdout
+    mov ecx, mensi          ; pointer to message
+    mov edx, tamensi        ; message length
+    int 0x80                ; make system call
+
+    ;=========================================================
+    ; Step 2: Read user input
+    ;=========================================================
+    mov eax, 3              ; syscall: sys_read
+    mov ebx, 0              ; file descriptor: stdin
+    mov ecx, buff           ; pointer to buffer
+    mov edx, 20             ; max bytes to read
+    int 0x80                ; make system call
+
+    mov [qde], eax          ; store number of bytes read
+
+    ;=========================================================
+    ; Step 3: Compare first character with 'a'
+    ;=========================================================
+    cmp byte [buff], 'a'    ; compare first character with 'a'
+    je igual                ; if equal, jump to 'igual' label
+
 diferente:
-mov eax, 4 ; PRINT
-mov ebx, 1 ; FD da tela
-mov ecx, mensdif ; ponteiro da string
-mov edx, tamdif
-int 80h ; chamada ao kernel
-jmp final
+    ;=========================================================
+    ; Step 4a: Print "character is different"
+    ;=========================================================
+    mov eax, 4              ; syscall: sys_write
+    mov ebx, 1              ; stdout
+    mov ecx, mensdif        ; pointer to "different" message
+    mov edx, tamdif         ; message length
+    int 0x80                ; make system call
+    jmp final               ; skip 'igual' section
+
 igual:
-mov eax, 4 ; PRINT
-mov ebx, 1 ; FD da tela
-mov ecx, mensig ; ponteiro da string
-mov edx, tamig
-int 80h ; chamada ao kernel
+    ;=========================================================
+    ; Step 4b: Print "character is equal"
+    ;=========================================================
+    mov eax, 4              ; syscall: sys_write
+    mov ebx, 1              ; stdout
+    mov ecx, mensig         ; pointer to "equal" message
+    mov edx, tamig          ; message length
+    int 0x80                ; make system call
+
 final:
-mov eax,1
-int 0x80
-; Exemplo: é montado com
-; nasm –f elf64 teste.asm
-; Gera o objeto teste.o
-; ld teste.o –o teste
-; Gera o executável teste
+    ;=========================================================
+    ; Step 5: Exit program
+    ;=========================================================
+    mov eax, 1              ; syscall: sys_exit
+    int 0x80                ; exit program
+
+;-------------------------------------------------------------
+; To assemble and run:
+; nasm -f elf64 teste.asm
+; ld teste.o -o teste
 ; ./teste
-; Executa
+;-------------------------------------------------------------
