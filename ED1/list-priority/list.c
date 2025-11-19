@@ -3,11 +3,28 @@
 // --- Question 1: Function Implementations (Scaffolding) ---
 
 priority_queue* create_priority_queue(void) {
-    // TODO: Implement the 'create_priority_queue'
+    priority_queue* pq = (priority_queue*) malloc(sizeof(priority_queue));
+    if (pq == NULL) {
+        fprintf(stderr, "Memory allocation failed for struct.\n");
+        exit(1);
+    }
+    pq->vet = (V*) malloc(INITIAL_CAPACITY * sizeof(V));
+    if (pq->vet == NULL) {
+        fprintf(stderr, "Memory allocation failed for vector.\n");
+        free(pq);
+        exit(1);
+    }
+    pq->capacity = INITIAL_CAPACITY;
+    pq->size = 0;
+
+    return pq;
 }
 
 void free_priority_queue(priority_queue* pq) {
-    // TODO: Implement the 'free_priority_queue'
+    if (pq != NULL) {
+        free(pq->vet);
+        free(pq);
+    }
 }
 
 void add(priority_queue* pq, V value) {
