@@ -40,15 +40,19 @@ V remove_element(priority_queue* pq) {
 }
 
 int get_size(priority_queue* pq) {
-    // TODO: Implement 'get_size'
+    if (pq == NULL) return 0;
+    return pq->size;
 }
 
 int is_empty(priority_queue* pq) {
-    // TODO: Implement 'is_empty'
+    if (pq == NULL) return 1;
+    return (pq->size == 0);
 }
 
 void clear(priority_queue* pq) {
-    // TODO: Implement 'clear'
+    if (pq != NULL) {
+        pq->size = 0;
+    }
 }
 
 // --- Question 2: Function Implementations (Scaffolding) ---
