@@ -139,24 +139,131 @@ void clear(priority_queue* pq) {
     }
 }
 
-// --- Question 2: Function Implementations (Scaffolding) ---
+// --- Question 2: Function Implementations ---
 
 void print_queue(priority_queue* pq) {
-    // TODO: Implement 'print_queue' using only Q1 API
+    if (pq == NULL) return;
+
+    // Create a temporary queue to hold elements while printing
+    priority_queue* temp = create_priority_queue();
+
+    // 1. Drain the original queue, print elements, and store them in temp
+    while (!is_empty(pq)) {
+        V val = remove_element(pq);
+        printf("%d ", val); // Assuming V is int
+        add(temp, val);
+    }
+    printf("\n");
+
+    // 2. Restore the original queue from temp
+    while (!is_empty(temp)) {
+        add(pq, remove_element(temp));
+    }
+
+    // 3. Clean up
+    free_priority_queue(temp);
 }
 
 int queues_equal(priority_queue* a, priority_queue* b) {
-    // TODO: Implement 'queues_equal' using only Q1 API
+    if (a == NULL || b == NULL) return 0;
+    
+    // Quick check on size
+    if (get_size(a) != get_size(b)) {
+        return 0;
+    }
+
+    // Create temp queues to store elements during comparison
+    priority_queue* temp_a = create_priority_queue();
+    priority_queue* temp_b = create_priority_queue();
+    
+    int are_equal = 1; // Assume true until proven false
+
+    // 1. Compare elements one by one
+    while (!is_empty(a)) {
+        V val_a = remove_element(a);
+        V val_b = remove_element(b);
+
+        if (val_a != val_b) {
+            are_equal = 0;
+        }
+
+        // Save elements to restore later
+        add(temp_a, val_a);
+        add(temp_b, val_b);
+    }
+
+    // 2. Restore both original queues
+    while (!is_empty(temp_a)) {
+        add(a, remove_element(temp_a));
+    }
+    while (!is_empty(temp_b)) {
+        add(b, remove_element(temp_b));
+    }
+
+    // 3. Clean up
+    free_priority_queue(temp_a);
+    free_priority_queue(temp_b);
+
+    return are_equal;
 }
 
 priority_queue* clone_queue(priority_queue* pq) {
-    // TODO: Implement 'clone_queue' using only Q1 API
+    if (pq == NULL) return NULL;
+
+    priority_queue* clone = create_priority_queue();
+    priority_queue* temp = create_priority_queue();
+
+    // 1. Move elements from source to BOTH clone and temp
+    while (!is_empty(pq)) {
+        V val = remove_element(pq);
+        add(clone, val);
+        add(temp, val);
+    }
+
+    // 2. Restore the source queue from temp
+    while (!is_empty(temp)) {
+        add(pq, remove_element(temp));
+    }
+
+    // 3. Clean up temp
+    free_priority_queue(temp);
+
+    return clone;
 }
 
 void sort_vector_ascending(V* vector, int n) {
-    // TODO: Implement 'sort_vector_ascending'
+    if (vector == NULL || n <= 0) return;
+
+    priority_queue* pq = create_priority_queue();
+
+    // 1. Add all vector elements to the min-heap
+    for (int i = 0; i < n; i++) {
+        add(pq, vector[i]);
+    }
+
+    // 2. Remove elements. Min-heap removes smallest first -> Ascending order.
+    for (int i = 0; i < n; i++) {
+        vector[i] = remove_element(pq);
+    }
+
+    free_priority_queue(pq);
 }
 
 void sort_vector_descending(V* vector, int n) {
-    // TODO: Implement 'sort_vector_descending'
+    if (vector == NULL || n <= 0) return;
+
+    priority_queue* pq = create_priority_queue();
+
+    // 1. Add all vector elements to the min-heap
+    for (int i = 0; i < n; i++) {
+        add(pq, vector[i]);
+    }
+
+    // 2. Remove elements. Min-heap removes smallest first.
+    // To get descending order, fill the vector from the END (index n-1) to the START (0).
+    for (int i = n - 1; i >= 0; i--) {
+        vector[i] = remove_element(pq);
+    }
+
+    free_priority_queue(pq);
 }
